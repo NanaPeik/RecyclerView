@@ -32,7 +32,8 @@ class RecyclerViewActivity : AppCompatActivity() {
             item++
         }
         listTitles.add(finalString)
-        listsRecyclerView.adapter?.notifyDataSetChanged()
+//        listsRecyclerView.adapter?.notifyDataSetChanged()
+        listsRecyclerView.adapter?.notifyItemChanged(listTitles.size-1)
 
     }
 
