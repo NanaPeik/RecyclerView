@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ge.tsu.android.myapplication.R
 
-class ListSelectionRecyclerViewAdapter(private val listTitles: Array<String>):
+class ListSelectionRecyclerViewAdapter(private val listTitles: ArrayList<String>):
     RecyclerView.Adapter<ListSelectionViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListSelectionViewHolder {
