@@ -1,66 +1,63 @@
 package ge.tsu.android.myapplication.recycle
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.CoordinatorLayoutBinding
-import ge.tsu.android.myapplication.databinding.FragmentTextBinding
-import kotlin.random.Random
 
-class RecyclerViewActivity : AppCompatActivity(), OnDogSelected {
-//    lateinit var listsRecyclerView: RecyclerView
+class RecyclerViewActivity : AppCompatActivity() {
 
-    private lateinit var binding: CoordinatorLayoutBinding
+    companion object {
+        lateinit var binding: CoordinatorLayoutBinding
 
-    var listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
-    var finalString: String=""
-    var fragmentActivity = ge.tsu.android.myapplication.recycle.FragmentActivity()
-
-    fun showHide(view:View) {
-        view.visibility = if (view.visibility == View.VISIBLE){
-            View.INVISIBLE
-        } else{
-            View.VISIBLE
-        }
+        var listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
+
         super.onCreate(savedInstanceState)
-        binding= CoordinatorLayoutBinding.inflate(layoutInflater)
+        binding = CoordinatorLayoutBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        binding.listsRecyclerview.layoutManager=LinearLayoutManager(this)
-        binding.listsRecyclerview.adapter= ListSelectionRecyclerViewAdapter(listTitles)
-        binding.fab.setOnClickListener{
-//            view.getViewById(R.id.fragment).visibility=View.VISIBLE
-//            binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
-//        var random = Random
-//        var finalString = ""
-//        var range = random.nextInt(10,20)
-//        var item = 0
-//        while (item < range){
-//            var char = random.nextInt(97,122).toChar()
-//            finalString += char
-//            item++
-//        }
-//        listTitles.add(finalString)
-////        binding.listsRecyclerview.adapter?.notifyDataSetChanged()
-//        binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
-            onDogSelected(fragmentActivity)
+        binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
+        binding.listsRecyclerview.adapter = ListSelectionRecyclerViewAdapter(listTitles)
+
+        binding.fab.setOnClickListener {
+            view.getViewById(R.id.fragment).visibility = View.VISIBLE
         }
     }
+    class FragmentActivity: Fragment() {
 
+        override fun onCreateView(inflater: LayoutInflater,
+                                  container: ViewGroup?,
+                                  savedInstanceState: Bundle?): View? {
 
+            return inflater.inflate(R.layout.fragment_text, container, false )
+        }
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
 
-    override fun onDogSelected(fargmentActivity: ge.tsu.android.myapplication.recycle.FragmentActivity) {
-        listTitles.add(fragmentActivity.binding.editText.text.toString())
-        binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)    }
-
+            view.findViewById<Button>(R.id.add).setOnClickListener{
+                view.findViewById<EditText>(R.id.editText).text.takeIf {
+                    it.isNotEmpty()
+                }?.let {
+                    listTitles.add(view.findViewById<EditText>(R.id.editText).text.toString())
+                    binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size - 1)
+                    view.visibility = View.GONE
+                }
+            }
+        }
+    }
 
 //    fun addItemInListView(view: View) {
 //        var random = Random
@@ -75,24 +72,5 @@ class RecyclerViewActivity : AppCompatActivity(), OnDogSelected {
 //        listTitles.add(finalString)
 //        binding.listsRecyclerview.adapter?.notifyDataSetChanged()
 //        binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
-//    }
-
-//    class FragmentActivity: Fragment() {
-//
-//        lateinit var textView: TextView
-//        lateinit var button: Button
-//
-//        override fun onCreateView(inflater: LayoutInflater,
-//                                  container: ViewGroup?,
-//                                  savedInstanceState: Bundle?): View? {
-//
-//            val view: View = inflater.inflate(R.layout.fragment_text, container, false )
-//            textView=view.findViewById(R.id.itemString)
-//            button=view.findViewById(R.id.fab)
-//            listTitles.add(textView.text.toString())
-//            view.visibility=View.GONE
-//            return view
-//        }
-//
 //    }
 }
