@@ -32,6 +32,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             result?.let {
                 if(it!=""){
                     listTitles.add(it)
+                    binding.fab.isClickable=true
                     adapter.notifyItemInserted(listTitles.size-1)
                 }
             }
@@ -42,6 +43,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<TextFragment>(R.id.fragment_container_view)
+                binding.fab.isClickable=false
             }
         }
     }
