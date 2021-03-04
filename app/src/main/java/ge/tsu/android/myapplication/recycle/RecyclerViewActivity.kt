@@ -14,7 +14,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     private val listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
@@ -25,17 +24,17 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = adapter
 
-        supportFragmentManager.setFragmentResultListener(
-            ExtraKeys.FRAGMENT_REQUEST_KEY,
-            this
-        ) { _, bundle ->
+        supportFragmentManager.setFragmentResultListener(ExtraKeys.FRAGMENT_REQUEST_KEY, this) { _, bundle ->
             val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
-
             result?.let {
-                listTitles.add(it)
-                adapter.notifyItemInserted(listTitles.size)
+                if(it!=""){
+                    listTitles.add(it)
+                    adapter.notifyItemInserted(listTitles.size-1)
+                }
+
             }
         }
+
 
         binding.fab.setOnClickListener {
             supportFragmentManager.commit {
