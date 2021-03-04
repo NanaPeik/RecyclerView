@@ -15,7 +15,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     private lateinit var binding: ActivityRecyclerviewBinding
     private lateinit var adapter: ListSelectionRecyclerViewAdapter
 
-    private val listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
+    private val listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials","Shopping List", "Chores", "Android Tutorials","Shopping List", "Chores", "Android Tutorials")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                     listTitles.add(it)
                     binding.fab.isClickable=true
                     adapter.notifyItemInserted(listTitles.size-1)
+                    binding.listsRecyclerview.smoothScrollToPosition(listTitles.size)
                 }
             }
         }
