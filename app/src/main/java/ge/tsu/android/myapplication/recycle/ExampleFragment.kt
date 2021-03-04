@@ -32,7 +32,7 @@ class ExampleFragment : Fragment(R.layout.fragment_text){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel=ViewModelProvider(this).get(ItemViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
         button.setOnClickListener{
             viewModel.currentString.value=editText.text.toString()

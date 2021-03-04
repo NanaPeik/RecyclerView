@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.CoordinatorLayoutBinding
@@ -15,7 +16,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.coordinator_layout) {
 
         var listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
 
-    private val viewModel = ItemViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
                 supportActionBar?.hide()
@@ -28,6 +28,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.coordinator_layout) {
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = ListSelectionRecyclerViewAdapter(listTitles)
 //        binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
+        val viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
         viewModel.currentString.observe(this, Observer { item ->
             listTitles.add(item)
