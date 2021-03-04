@@ -1,6 +1,9 @@
 package ge.tsu.android.myapplication.recycle
 
 import android.os.Bundle
+import android.text.InputType
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -31,7 +34,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                     listTitles.add(it)
                     adapter.notifyItemInserted(listTitles.size-1)
                 }
-
             }
         }
 
