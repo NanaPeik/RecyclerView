@@ -1,63 +1,70 @@
 package ge.tsu.android.myapplication.recycle
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.CoordinatorLayoutBinding
 
-class RecyclerViewActivity : AppCompatActivity() {
-
-    companion object {
-        lateinit var binding: CoordinatorLayoutBinding
+class RecyclerViewActivity : AppCompatActivity(R.layout.coordinator_layout) {
+        private lateinit var binding: CoordinatorLayoutBinding
 
         var listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
-    }
+
+    private val viewModel = ItemViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportActionBar?.hide()
+                supportActionBar?.hide()
 
         super.onCreate(savedInstanceState)
+
         binding = CoordinatorLayoutBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = ListSelectionRecyclerViewAdapter(listTitles)
+//        binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
 
-        binding.fab.setOnClickListener {
-            view.getViewById(R.id.fragment).visibility = View.VISIBLE
-        }
-    }
-    class FragmentActivity: Fragment() {
-
-        override fun onCreateView(inflater: LayoutInflater,
-                                  container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-
-            return inflater.inflate(R.layout.fragment_text, container, false )
-        }
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-
-            view.findViewById<Button>(R.id.add).setOnClickListener{
-                view.findViewById<EditText>(R.id.editText).text.takeIf {
-                    it.isNotEmpty()
-                }?.let {
-                    listTitles.add(view.findViewById<EditText>(R.id.editText).text.toString())
-                    binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size - 1)
-                    view.visibility = View.GONE
+        viewModel.currentString.observe(this, Observer { item ->
+            listTitles.add(item)
+            Log.d("item-------------",item)
+            binding.listsRecyclerview.adapter?.notifyItemInserted(listTitles.size-1)
+        })
+//
+            if (savedInstanceState == null) {
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    add<ExampleFragment>(R.id.fragment_container_view)
                 }
             }
-        }
+
     }
+//
+//    companion object {
+//        lateinit var binding: CoordinatorLayoutBinding
+//
+//        var listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
+//    }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        supportActionBar?.hide()
+//
+//        super.onCreate(savedInstanceState)
+//        binding = CoordinatorLayoutBinding.inflate(layoutInflater)
+//        val view = binding.root
+//        setContentView(view)
+//        binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
+//        binding.listsRecyclerview.adapter = ListSelectionRecyclerViewAdapter(listTitles)
+//
+//        binding.fab.setOnClickListener {
+//
+//        }
+//    }
+
 
 //    fun addItemInListView(view: View) {
 //        var random = Random

@@ -25,26 +25,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/fragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="800dp"
-        app:layout_constraintBottom_toTopOf="@+id/lists_recyclerview"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container_view"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
-            android:name="ge.tsu.android.myapplication.recycle.RecyclerViewActivity$FragmentActivity"
+        <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/lists_recyclerview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lists_recyclerview" />
-    </LinearLayout>
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
