@@ -12,7 +12,9 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     private lateinit var binding: ActivityRecyclerviewBinding
     private lateinit var adapter: ListSelectionRecyclerViewAdapter
 
-    private val listTitles = arrayListOf("Shopping List", "Chores", "Android Tutorials")
+    val listDataManager: ListDataManager = ListDataManager(this)
+
+    private var listTitles = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +22,9 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        listTitles = listDataManager.readList()
         adapter = ListSelectionRecyclerViewAdapter(listTitles)
+
 
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = adapter
@@ -33,6 +37,9 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
             result?.let {
                 listTitles.add(it)
+
+                listDataManager.saveList(listTitles)
+
                 adapter.notifyItemInserted(listTitles.size)
             }
         }
