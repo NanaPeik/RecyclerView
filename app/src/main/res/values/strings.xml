@@ -4,4 +4,6 @@
     <string name="your_score">Your Score: %1$d</string>
     <string name="time_left">Time left: %1$d</string>
     <string name="game_over_message">Times up! Your score was: %1$d</string>
+    <string name="name_of_list">What is the name of your list?</string>
+    <string name="create_list">Create</string>
 </resources>
