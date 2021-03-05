@@ -36,8 +36,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
             result?.let {
                 listTitles.add(it)
-                val taskList = TaskList(ExtraKeys.SHARED_PREFERENCES_KEY, listTitles)
-                listDataManager.add(taskList)
+                listDataManager.add(listTitles)
                 adapter.notifyItemInserted(listTitles.size)
             }
         }

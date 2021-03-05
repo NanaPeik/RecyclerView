@@ -9,9 +9,9 @@ class ListDataManager(private val context: Context) {
 
     val gson = Gson()
 
-    fun add(value: TaskList) {
+    fun add(list: List<String>) {
         val sharedPreferences = getDefaultSharedPreferences(context).edit()
-        sharedPreferences.putString(value.name, gson.toJson(value.tasks))
+        sharedPreferences.putString(ExtraKeys.SHARED_PREFERENCES_KEY, gson.toJson(list))
         sharedPreferences.apply()
     }
 
