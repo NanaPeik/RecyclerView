@@ -22,7 +22,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        listTitles = listDataManager.readList().tasks
+        listTitles = listDataManager.readList() ?: ArrayList()
         adapter = ListSelectionRecyclerViewAdapter(listTitles)
 
 
@@ -36,7 +36,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
             result?.let {
                 listTitles.add(it)
-                var taskList=TaskList(ExtraKeys.SHARED_PREFERENCES_KEY,listTitles)
+                val taskList = TaskList(ExtraKeys.SHARED_PREFERENCES_KEY, listTitles)
                 listDataManager.add(taskList)
                 adapter.notifyItemInserted(listTitles.size)
             }
