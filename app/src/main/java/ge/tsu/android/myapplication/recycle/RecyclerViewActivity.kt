@@ -12,7 +12,11 @@ import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   private lateinit var binding: ActivityRecyclerviewBinding
-  private lateinit var adapter: ListSelectionRecyclerViewAdapter
+  companion object
+  {
+    lateinit var adapter: ListSelectionRecyclerViewAdapter
+
+  }
 
   val listDataManager: ListDataManager = ListDataManager(this)
 
@@ -38,29 +42,30 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     listTitles = listDataManager.readList() ?: ArrayList()
 //    adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
-    adapter = ListSelectionRecyclerViewAdapter(listTitles,false)
+    adapter = ListSelectionRecyclerViewAdapter(listTitles)
 
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
     binding.listsRecyclerview.adapter = adapter
 
     binding.switcher.setOnCheckedChangeListener {_, isChecked ->
-//      var listTitlesChecked = ArrayList<RecycleViewItem>()
-//
-//      if(isChecked) {
-//        for (item in listTitles) {
-//          if (item.isChecked) {
-//            listTitlesChecked.add(item)
-//          }
-//        }
-//        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked,true)
-//        binding.listsRecyclerview.adapter = adapter
-//        adapter.notifyDataSetChanged()
-//      }else{
-//        adapter = ListSelectionRecyclerViewAdapter(listTitles,true)
-//        binding.listsRecyclerview.adapter = adapter
-//        adapter.notifyDataSetChanged()
-//      }
-      ExtraKeys.showChecked=true
+      var listTitlesChecked = ArrayList<RecycleViewItem>()
+
+      if(isChecked) {
+        for (item in listTitles) {
+          if (item.isChecked) {
+            listTitlesChecked.add(item)
+          }
+        }
+        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      }else{
+        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      }
+      ExtraKeys.showChecked = !ExtraKeys.showChecked
+
     }
 
     supportFragmentManager.setFragmentResultListener(
