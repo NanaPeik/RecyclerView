@@ -13,7 +13,7 @@ interface onClickInterface {
 }
 
 class ListSelectionRecyclerViewAdapter(
-  private var listTitles: List<RecycleViewItem>
+  private var listTitles: MutableList<RecycleViewItem>
 // , private var onclickInterface: onClickInterface
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>() {
 //  var onClickInterface: onClickInterface
@@ -32,19 +32,20 @@ class ListSelectionRecyclerViewAdapter(
 
   override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
 //    holder.listPosition.text = (position + 1).toString()
-
-    holder.listPosition.text = listTitles.get(position).itemNumber.toString()
-    holder.listTitle.text = listTitles[position].itemText
-    holder.listCheck.isChecked = listTitles.get(position).isChecked
-
-    holder.listCheck.setOnClickListener{
+//if(listTitles.get(position).isChecked) {
+  holder.listPosition.text = listTitles.get(position).itemNumber.toString()
+  holder.listTitle.text = listTitles[position].itemText
+  holder.listCheck.isChecked = listTitles.get(position).isChecked
+//}
+    holder.listCheck.setOnClickListener(){
       listTitles.get(position).isChecked = !listTitles.get(position).isChecked
       if(ExtraKeys.showChecked && !listTitles[position].isChecked){
-
-        listTitles.toMutableList().removeAt(position)
-//        notifyDataSetChanged()
-        RecyclerViewActivity.adapter.notifyItemRemoved(position)
-
+        listTitles.removeAt(position)
+//
+//      notifyDataSetChanged()
+      notifyItemRemoved(position)
+//      updateData(listTitles)
+////        RecyclerViewActivity.adapter.notifyItemRemoved(position)
       }
     }
 //    holder.listTitle.setText(listTitles.get(position))
@@ -54,10 +55,14 @@ class ListSelectionRecyclerViewAdapter(
 //    }
   }
 
+//  fun updateData(list:List<RecycleViewItem>){
+//    this.listTitles = list
+//    this.notifyDataSetChanged()
+//  }
+
   class ListSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val listPosition = itemView.findViewById(R.id.itemNumber) as TextView
     val listTitle = itemView.findViewById(R.id.itemString) as TextView
     val listCheck = itemView.findViewById(R.id.list_item_checkbox) as CheckBox
   }
-
 }

@@ -21,7 +21,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   val listDataManager: ListDataManager = ListDataManager(this)
 
   private lateinit var onclickInterface: onClickInterface
-  private var listTitles = ArrayList<RecycleViewItem>()
+  private var listTitles = mutableListOf<RecycleViewItem>()
 
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,16 +50,19 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     binding.switcher.setOnCheckedChangeListener {_, isChecked ->
       var listTitlesChecked = ArrayList<RecycleViewItem>()
 
+
       if(isChecked) {
         for (item in listTitles) {
           if (item.isChecked) {
             listTitlesChecked.add(item)
           }
         }
+
         adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
         binding.listsRecyclerview.adapter = adapter
         adapter.notifyDataSetChanged()
-      }else{
+//        onclickInterface.filterList(listTitlesChecked)
+      } else {
         adapter = ListSelectionRecyclerViewAdapter(listTitles)
         binding.listsRecyclerview.adapter = adapter
         adapter.notifyDataSetChanged()
