@@ -9,66 +9,104 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
 
-
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
-    private lateinit var binding: ActivityRecyclerviewBinding
-    private lateinit var adapter: ListSelectionRecyclerViewAdapter
 
-    val listDataManager: ListDataManager = ListDataManager(this)
+  private lateinit var binding: ActivityRecyclerviewBinding
+  private lateinit var adapter: ListSelectionRecyclerViewAdapter
 
-    private lateinit var onclickInterface: onClickInterface
-    private var listTitles = ArrayList<String>()
+  val listDataManager: ListDataManager = ListDataManager(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  private lateinit var onclickInterface: onClickInterface
+  private var listTitles = ArrayList<RecycleViewItem>()
 
-        onclickInterface = object : onClickInterface {
-            override fun setClick(abc: Int) {
-                listTitles.removeAt(abc)
-                Toast.makeText(this@RecyclerViewActivity, "Position is$abc", Toast.LENGTH_LONG).show()
-                listDataManager.add(listTitles)
-                adapter.notifyDataSetChanged()
-            }
+
+//  val sw = findViewById<Switch>(R.id.switch1)
+//  sw?.setOnCheckedChangeListener({ _, isChecked ->
+//    val msg = if (isChecked) "ON" else "OFF"
+//    Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+//    sw.text = msg
+//  })
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    supportActionBar?.hide()
+
+    onclickInterface = object : onClickInterface {
+      override fun onClick(position: Int) {
+        listTitles.removeAt(position)
+        Toast.makeText(this@RecyclerViewActivity, "Position is$position", Toast.LENGTH_LONG)
+          .show()
+        listDataManager.add(listTitles)
+        adapter.notifyDataSetChanged()
+      }
+    }
+    binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+
+    listTitles = listDataManager.readList() ?: ArrayList()
+//    adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
+        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+
+    binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
+    binding.listsRecyclerview.adapter = adapter
+
+    binding.switcher.setOnCheckedChangeListener {_, isChecked ->
+      var listTitlesChecked = ArrayList<RecycleViewItem>()
+
+      if(isChecked) {
+        for (item in listTitles) {
+          if (item.isChecked) {
+            listTitlesChecked.add(item)
+          }
         }
-        binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        listTitles = listDataManager.readList() ?: ArrayList()
-        adapter = ListSelectionRecyclerViewAdapter(listTitles,onclickInterface)
-
-        binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
+        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
         binding.listsRecyclerview.adapter = adapter
+        adapter.notifyItemInserted(listTitlesChecked.size)
+      }else{
+        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyItemInserted(listTitles.size)
+      }
+
+//        listTitlesChecked = listTitles.filter { s -> s.isChecked==true }
+      }
 
 
-        supportFragmentManager.setFragmentResultListener(
-            ExtraKeys.FRAGMENT_REQUEST_KEY,
-            this
-        ) { _, bundle ->
-            val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
-            result?.let {
-                listTitles.add(it)
+    supportFragmentManager.setFragmentResultListener(
+      ExtraKeys.FRAGMENT_REQUEST_KEY,
+      this
+    ) { _, bundle ->
+      val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
+      result?.let {
 
-                binding.fab.isClickable=true
+        var rvi=RecycleViewItem(
+          listTitles.size + 1,
+           it,
+          false
+        )
 
-                listDataManager.add(listTitles)
-                adapter.notifyItemInserted(listTitles.size)
-            }
+        listTitles.add(rvi)
 
-        }
+        binding.fab.isClickable = true
 
-        binding.fab.setOnClickListener {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<TextFragment>(R.id.fragment_container_view)
+        listDataManager.add(listTitles)
+        adapter.notifyItemInserted(listTitles.size)
+      }
 
-                binding.fab.isClickable=false
-            }
-        }
+    }
+
+    binding.fab.setOnClickListener {
+      supportFragmentManager.commit {
+        setReorderingAllowed(true)
+        add<TextFragment>(R.id.fragment_container_view)
+
+        binding.fab.isClickable = false
+      }
+    }
 //        binding.fragmentContainerView.findViewById<TextView>(R.id.itemString).setOnClickListener{
 //            removeOnContextAvailableListener {  }
 //        }
-    }
-
+  }
 
 
 }

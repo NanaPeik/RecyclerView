@@ -7,20 +7,19 @@ import com.google.gson.reflect.TypeToken
 
 class ListDataManager(private val context: Context) {
 
-    val gson = Gson()
+  val gson = Gson()
 
-    fun add(list: List<String>) {
-        val sharedPreferences = getDefaultSharedPreferences(context).edit()
-        sharedPreferences.putString(ExtraKeys.SHARED_PREFERENCES_KEY, gson.toJson(list))
-        sharedPreferences.apply()
-    }
+  fun add(list: List<RecycleViewItem>) {
+    val sharedPreferences = getDefaultSharedPreferences(context).edit()
+    sharedPreferences.putString(ExtraKeys.SHARED_PREFERENCES_KEY, gson.toJson(list))
+    sharedPreferences.apply()
+  }
 
-    fun readList(): ArrayList<String>? {
-        val sharedPreferences = getDefaultSharedPreferences(context)
+  fun readList(): ArrayList<RecycleViewItem>? {
+    val sharedPreferences = getDefaultSharedPreferences(context)
 
-        val data = sharedPreferences.getString(ExtraKeys.SHARED_PREFERENCES_KEY, "")
-        val type = object : TypeToken<ArrayList<String>>() {}.getType()
-        return gson.fromJson(data, type)
-    }
-
+    val data = sharedPreferences.getString(ExtraKeys.SHARED_PREFERENCES_KEY, "")
+    val type = object : TypeToken<ArrayList<RecycleViewItem>>() {}.getType()
+    return gson.fromJson(data, type)
+  }
 }
