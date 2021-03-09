@@ -11,28 +11,28 @@ import androidx.fragment.app.setFragmentResult
 import ge.tsu.android.myapplication.databinding.FragmentTextBinding
 
 class TextFragment : Fragment() {
-  private lateinit var binding: FragmentTextBinding
+    private lateinit var binding: FragmentTextBinding
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    binding = FragmentTextBinding.inflate(inflater, container, false)
-    return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    binding.add.setOnClickListener {
-      setFragmentResult(
-        ExtraKeys.FRAGMENT_REQUEST_KEY,
-        bundleOf(ExtraKeys.FRAGMENT_RESULT_EXTRA to binding.editText.text.toString())
-      )
-      parentFragmentManager.commit {
-        remove(this@TextFragment)
-      }
+    override fun onCreateView(
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentTextBinding.inflate(inflater, container, false)
+        return binding.root
     }
-  }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.add.setOnClickListener {
+            setFragmentResult(
+              ExtraKeys.FRAGMENT_REQUEST_KEY,
+              bundleOf(ExtraKeys.FRAGMENT_RESULT_EXTRA to binding.editText.text.toString())
+            )
+            parentFragmentManager.commit {
+                remove(this@TextFragment)
+            }
+        }
+    }
 }
