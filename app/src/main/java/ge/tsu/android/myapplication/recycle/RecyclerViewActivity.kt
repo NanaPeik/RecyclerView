@@ -20,13 +20,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   private var listTitles = ArrayList<RecycleViewItem>()
 
 
-//  val sw = findViewById<Switch>(R.id.switch1)
-//  sw?.setOnCheckedChangeListener({ _, isChecked ->
-//    val msg = if (isChecked) "ON" else "OFF"
-//    Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
-//    sw.text = msg
-//  })
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     supportActionBar?.hide()
@@ -45,32 +38,30 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     listTitles = listDataManager.readList() ?: ArrayList()
 //    adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
-        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+    adapter = ListSelectionRecyclerViewAdapter(listTitles,false)
 
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
     binding.listsRecyclerview.adapter = adapter
 
     binding.switcher.setOnCheckedChangeListener {_, isChecked ->
-      var listTitlesChecked = ArrayList<RecycleViewItem>()
-
-      if(isChecked) {
-        for (item in listTitles) {
-          if (item.isChecked) {
-            listTitlesChecked.add(item)
-          }
-        }
-        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyItemInserted(listTitlesChecked.size)
-      }else{
-        adapter = ListSelectionRecyclerViewAdapter(listTitles)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyItemInserted(listTitles.size)
-      }
-
-//        listTitlesChecked = listTitles.filter { s -> s.isChecked==true }
-      }
-
+//      var listTitlesChecked = ArrayList<RecycleViewItem>()
+//
+//      if(isChecked) {
+//        for (item in listTitles) {
+//          if (item.isChecked) {
+//            listTitlesChecked.add(item)
+//          }
+//        }
+//        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked,true)
+//        binding.listsRecyclerview.adapter = adapter
+//        adapter.notifyDataSetChanged()
+//      }else{
+//        adapter = ListSelectionRecyclerViewAdapter(listTitles,true)
+//        binding.listsRecyclerview.adapter = adapter
+//        adapter.notifyDataSetChanged()
+//      }
+      ExtraKeys.showChecked=true
+    }
 
     supportFragmentManager.setFragmentResultListener(
       ExtraKeys.FRAGMENT_REQUEST_KEY,
@@ -84,7 +75,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
            it,
           false
         )
-
         listTitles.add(rvi)
 
         binding.fab.isClickable = true
@@ -92,7 +82,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         listDataManager.add(listTitles)
         adapter.notifyItemInserted(listTitles.size)
       }
-
     }
 
     binding.fab.setOnClickListener {
@@ -107,6 +96,4 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 //            removeOnContextAvailableListener {  }
 //        }
   }
-
-
 }

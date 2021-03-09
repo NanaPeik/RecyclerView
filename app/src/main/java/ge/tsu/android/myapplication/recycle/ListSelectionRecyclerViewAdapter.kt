@@ -13,10 +13,9 @@ interface onClickInterface {
 }
 
 class ListSelectionRecyclerViewAdapter(
-  private val listTitles: List<RecycleViewItem>
-//  ,
+  private val listTitles: List<RecycleViewItem>,
+  private val isChacked: Boolean
 //  private var onclickInterface: onClickInterface
-
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>() {
 //  var onClickInterface: onClickInterface
 
@@ -34,12 +33,20 @@ class ListSelectionRecyclerViewAdapter(
 
   override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
 //    holder.listPosition.text = (position + 1).toString()
-    holder.listPosition.text = listTitles.get(position).itemNumber.toString()
-    holder.listTitle.text = listTitles[position].itemText
-    holder.listCheck.isChecked = listTitles.get(position).isChecked
+    if(ExtraKeys.showChecked && listTitles.get(position).isChecked) {
+      holder.listPosition.text = listTitles.get(position).itemNumber.toString()
+      holder.listTitle.text = listTitles[position].itemText
+      holder.listCheck.isChecked = listTitles.get(position).isChecked
+    }
+    else if(!ExtraKeys.showChecked) {
+      holder.listPosition.text = listTitles.get(position).itemNumber.toString()
+      holder.listTitle.text = listTitles[position].itemText
+      holder.listCheck.isChecked = listTitles.get(position).isChecked
+    }
 
     holder.listCheck.setOnClickListener{
-      listTitles.get(position).isChecked=!listTitles.get(position).isChecked
+      listTitles.get(position).isChecked = !listTitles.get(position).isChecked
+
     }
 //    holder.listTitle.setText(listTitles.get(position))
 
