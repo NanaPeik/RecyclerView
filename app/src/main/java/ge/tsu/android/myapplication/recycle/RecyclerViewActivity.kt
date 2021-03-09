@@ -1,6 +1,8 @@
 package ge.tsu.android.myapplication.recycle
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
@@ -12,10 +14,10 @@ import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   private lateinit var binding: ActivityRecyclerviewBinding
-  companion object
-  {
-    lateinit var adapter: ListSelectionRecyclerViewAdapter
+  private lateinit var adapter: ListSelectionRecyclerViewAdapter
 
+  companion object{
+    var showChecked: Boolean = false
   }
 
   val listDataManager: ListDataManager = ListDataManager(this)
@@ -26,7 +28,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar?.hide()
+//    supportActionBar?.hide()
 
     onclickInterface = object : onClickInterface {
       override fun onClick(position: Int) {
@@ -47,29 +49,27 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
     binding.listsRecyclerview.adapter = adapter
 
-    binding.switcher.setOnCheckedChangeListener {_, isChecked ->
-      var listTitlesChecked = ArrayList<RecycleViewItem>()
-
-
-      if(isChecked) {
-        for (item in listTitles) {
-          if (item.isChecked) {
-            listTitlesChecked.add(item)
-          }
-        }
-
-        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-//        onclickInterface.filterList(listTitlesChecked)
-      } else {
-        adapter = ListSelectionRecyclerViewAdapter(listTitles)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-      }
-      ExtraKeys.showChecked = !ExtraKeys.showChecked
-
-    }
+//    binding.switcher.setOnCheckedChangeListener {_, isChecked ->
+//      var listTitlesChecked = ArrayList<RecycleViewItem>()
+//
+//      if(isChecked) {
+//        for (item in listTitles) {
+//          if (item.isChecked) {
+//            listTitlesChecked.add(item)
+//          }
+//        }
+//        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
+//        binding.listsRecyclerview.adapter = adapter
+//        adapter.notifyDataSetChanged()
+////        onclickInterface.filterList(listTitlesChecked)
+//      } else {
+//        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+//        binding.listsRecyclerview.adapter = adapter
+//        adapter.notifyDataSetChanged()
+//      }
+//      ExtraKeys.showChecked = !ExtraKeys.showChecked
+//
+//    }
 
     supportFragmentManager.setFragmentResultListener(
       ExtraKeys.FRAGMENT_REQUEST_KEY,
@@ -103,5 +103,36 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 //        binding.fragmentContainerView.findViewById<TextView>(R.id.itemString).setOnClickListener{
 //            removeOnContextAvailableListener {  }
 //        }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.main, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    if(item.itemId==R.id.show_checked){
+      var listTitlesChecked = ArrayList<RecycleViewItem>()
+
+      for (item in listTitles) {
+        if (item.isChecked) {
+          listTitlesChecked.add(item)
+        }
+      }
+      adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
+      binding.listsRecyclerview.adapter = adapter
+      adapter.notifyDataSetChanged()
+
+      showChecked = !showChecked
+
+    }
+    else if(item.itemId==R.id.show_all) {
+      adapter = ListSelectionRecyclerViewAdapter(listTitles)
+      binding.listsRecyclerview.adapter = adapter
+      adapter.notifyDataSetChanged()
+      showChecked = !showChecked
+
+    }
+    return super.onOptionsItemSelected(item)
   }
 }

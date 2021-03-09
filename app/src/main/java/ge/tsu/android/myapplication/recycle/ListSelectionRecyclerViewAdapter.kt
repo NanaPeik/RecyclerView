@@ -32,20 +32,16 @@ class ListSelectionRecyclerViewAdapter(
 
   override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
 //    holder.listPosition.text = (position + 1).toString()
-//if(listTitles.get(position).isChecked) {
-  holder.listPosition.text = listTitles.get(position).itemNumber.toString()
-  holder.listTitle.text = listTitles[position].itemText
-  holder.listCheck.isChecked = listTitles.get(position).isChecked
-//}
-    holder.listCheck.setOnClickListener(){
+//  if(listTitles.get(position).isChecked) {
+    holder.listPosition.text = listTitles.get(position).itemNumber.toString()
+    holder.listTitle.text = listTitles[position].itemText
+    holder.listCheck.isChecked = listTitles.get(position).isChecked
+//  }
+    holder.listCheck.setOnClickListener{
       listTitles.get(position).isChecked = !listTitles.get(position).isChecked
-      if(ExtraKeys.showChecked && !listTitles[position].isChecked){
+      if(RecyclerViewActivity.showChecked && !listTitles[position].isChecked){
         listTitles.removeAt(position)
-//
-//      notifyDataSetChanged()
-      notifyItemRemoved(position)
-//      updateData(listTitles)
-////        RecyclerViewActivity.adapter.notifyItemRemoved(position)
+        notifyItemRemoved(position)
       }
     }
 //    holder.listTitle.setText(listTitles.get(position))
@@ -54,11 +50,6 @@ class ListSelectionRecyclerViewAdapter(
 //      onClickInterface.onClick(position)
 //    }
   }
-
-//  fun updateData(list:List<RecycleViewItem>){
-//    this.listTitles = list
-//    this.notifyDataSetChanged()
-//  }
 
   class ListSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val listPosition = itemView.findViewById(R.id.itemNumber) as TextView
