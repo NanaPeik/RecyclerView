@@ -11,4 +11,17 @@
         android:orderInCategory="100"
         android:title="show all"
         app:showAsAction="never" />
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/sort_name"
+            android:title="name"
+            android:orderInCategory="1"
+            app:showAsAction="never" />
+
+        <item android:id="@+id/sort_date"
+            android:title="date"
+            android:orderInCategory="2"
+            app:showAsAction="never" />
+    </group>
+
 </menu>

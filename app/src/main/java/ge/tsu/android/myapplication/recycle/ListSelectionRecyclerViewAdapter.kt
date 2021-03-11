@@ -17,11 +17,11 @@ interface onClickInterface {
 }
 
 class ListSelectionRecyclerViewAdapter(
-  private var listTitles: ArrayList<RecycleViewItem>
+  private var listTitles: MutableList<RecycleViewItem>
 // , private var onclickInterface: onClickInterface
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>(), Filterable {
 //  var onClickInterface: onClickInterface
-var filteredList : ArrayList<RecycleViewItem>
+var filteredList : MutableList<RecycleViewItem>
 
   init {
     this.filteredList = listTitles
@@ -38,9 +38,9 @@ var filteredList : ArrayList<RecycleViewItem>
   override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
 //    holder.listPosition.text = (position + 1).toString()
 
-  holder.listPosition.text = filteredList.get(position).itemNumber.toString()
-  holder.listTitle.text = filteredList[position].itemText
-  holder.listCheck.isChecked = filteredList.get(position).isChecked
+    holder.listPosition.text = filteredList.get(position).itemNumber.toString()
+    holder.listTitle.text = filteredList[position].itemText
+    holder.listCheck.isChecked = filteredList.get(position).isChecked
     holder.listItemDetiles.text = filteredList.get(position).detiles
 
     holder.listCheck.setOnClickListener{
@@ -92,5 +92,4 @@ var filteredList : ArrayList<RecycleViewItem>
       }
     }
   }
-
 }

@@ -3,6 +3,7 @@ package ge.tsu.android.myapplication.recycle
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -49,6 +50,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
     binding.listsRecyclerview.adapter = adapter
+
 
     binding.itemSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
       override fun onQueryTextSubmit(query: String?): Boolean {
@@ -108,27 +110,45 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    if(item.itemId==R.id.show_checked){
-      var listTitlesChecked = ArrayList<RecycleViewItem>()
 
-      for (item in listTitles) {
-        if (item.isChecked) {
-          listTitlesChecked.add(item)
+    when(item.itemId){
+      R.id.show_checked -> {
+        var listTitlesChecked = ArrayList<RecycleViewItem>()
+
+        for (item in listTitles) {
+          if (item.isChecked) {
+            listTitlesChecked.add(item)
+          }
         }
+        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+        showChecked = !showChecked
       }
-      adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
-      binding.listsRecyclerview.adapter = adapter
-      adapter.notifyDataSetChanged()
+      R.id.show_all -> {
+        adapter = ListSelectionRecyclerViewAdapter(listTitles)
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+        showChecked = !showChecked
+      }
+      R.id.sort_name -> {
+        var sortedByNameList = listTitles.sortedWith(compareBy({
+          it.itemText
+        }))
 
-      showChecked = !showChecked
-
-    }
-    else if(item.itemId == R.id.show_all) {
-      adapter = ListSelectionRecyclerViewAdapter(listTitles)
-      binding.listsRecyclerview.adapter = adapter
-      adapter.notifyDataSetChanged()
-      showChecked = !showChecked
-
+        adapter = ListSelectionRecyclerViewAdapter(sortedByNameList.toMutableList())
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      }
+      R.id.sort_date -> {
+        var sortedByDate = listTitles.sortedWith(compareBy({
+          it.date
+        }))
+        adapter = ListSelectionRecyclerViewAdapter(sortedByDate.reversed().toMutableList())
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      }
     }
     return super.onOptionsItemSelected(item)
   }
