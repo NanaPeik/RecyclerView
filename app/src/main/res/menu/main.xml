@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/show_checked"
-        android:orderInCategory="100"
-        android:title="show checked"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/show_all"
-        android:orderInCategory="100"
-        android:title="show all"
-        app:showAsAction="never" />
-
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/sort_name"
-            android:title="name"
-            android:orderInCategory="1"
+        <item
+            android:id="@+id/settings"
+            android:orderInCategory="100"
+            android:title="settings"
             app:showAsAction="never" />
-
-        <item android:id="@+id/sort_date"
-            android:title="date"
-            android:orderInCategory="2"
-            app:showAsAction="never" />
-    </group>
-
 </menu>
