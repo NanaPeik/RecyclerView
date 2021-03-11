@@ -1,6 +1,11 @@
 package ge.tsu.android.myapplication.recycle
 
+import java.util.*
+
 data class RecycleViewItem(
-  public var itemNumber:Int = 0,
-  public var itemText:String,
-  public var isChecked:Boolean = false)
+   var itemNumber:Int = 0,
+   var itemText:String,
+   var isChecked:Boolean = false,
+   var detiles:String,
+   var date: Date
+   )

@@ -16,13 +16,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:textSize="24dp"
+        android:layout_marginStart="16dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/detiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_marginStart="16dp"
         android:text="TextView" />
 
     <CheckBox
         android:id="@+id/list_item_checkbox"
         android:layout_width="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="bottom"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -5,26 +5,27 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   private lateinit var binding: ActivityRecyclerviewBinding
   private lateinit var adapter: ListSelectionRecyclerViewAdapter
-
   companion object{
     var showChecked: Boolean = false
   }
-
+  
   val listDataManager: ListDataManager = ListDataManager(this)
 
   private lateinit var onclickInterface: onClickInterface
-  private var listTitles = mutableListOf<RecycleViewItem>()
-
+  private var listTitles = ArrayList<RecycleViewItem>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -49,41 +50,37 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
     binding.listsRecyclerview.adapter = adapter
 
-//    binding.switcher.setOnCheckedChangeListener {_, isChecked ->
-//      var listTitlesChecked = ArrayList<RecycleViewItem>()
-//
-//      if(isChecked) {
-//        for (item in listTitles) {
-//          if (item.isChecked) {
-//            listTitlesChecked.add(item)
-//          }
-//        }
-//        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
-//        binding.listsRecyclerview.adapter = adapter
-//        adapter.notifyDataSetChanged()
-////        onclickInterface.filterList(listTitlesChecked)
-//      } else {
-//        adapter = ListSelectionRecyclerViewAdapter(listTitles)
-//        binding.listsRecyclerview.adapter = adapter
-//        adapter.notifyDataSetChanged()
-//      }
-//      ExtraKeys.showChecked = !ExtraKeys.showChecked
-//
-//    }
+    binding.itemSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+      }
+
+    })
 
     supportFragmentManager.setFragmentResultListener(
       ExtraKeys.FRAGMENT_REQUEST_KEY,
       this
     ) { _, bundle ->
-      val result = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
-      result?.let {
+      val title = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
+      val detiles = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA_DETILES)
+      title?.let {
 
-        var rvi=RecycleViewItem(
-          listTitles.size + 1,
-           it,
-          false
-        )
-        listTitles.add(rvi)
+        var itemTitle = it
+        detiles?.let{
+          var rvi = RecycleViewItem(
+            listTitles.size + 1,
+            itemTitle,
+            false,
+            it,
+            Date()
+          )
+          listTitles.add(rvi)
+        }
 
         binding.fab.isClickable = true
 
@@ -126,7 +123,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
       showChecked = !showChecked
 
     }
-    else if(item.itemId==R.id.show_all) {
+    else if(item.itemId == R.id.show_all) {
       adapter = ListSelectionRecyclerViewAdapter(listTitles)
       binding.listsRecyclerview.adapter = adapter
       adapter.notifyDataSetChanged()
