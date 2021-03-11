@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".Settings"></activity>
+        <activity
+            android:name=".Settings"
+            android:label="Order Activity"
+            android:parentActivityName=".recycle.RecyclerViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".recycle.RecyclerViewActivity" />
+        </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".recycle.RecyclerViewActivity">
             <intent-filter>

@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Switch
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.add
@@ -25,7 +23,8 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     var showChecked: Boolean = false
   }
   
-  val listDataManager: ListDataManager = ListDataManager(this)
+  val listDataManager: ListDataManager<ArrayList<RecycleViewItem>> =
+    ListDataManager(ExtraKeys.SHARED_PREFERENCES_KEY, this)
 
   private lateinit var onclickInterface: onClickInterface
   private var listTitles = ArrayList<RecycleViewItem>()
@@ -37,20 +36,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     super.onCreate(savedInstanceState)
 //    supportActionBar?.hide()
 
-    val intentFormSettings = Intent()
 
-    list = intentFormSettings.getParcelableExtra(Settings.INTENT_SETTINGS_KEY)
-
-
-    onclickInterface = object : onClickInterface {
-      override fun onClick(position: Int) {
-        listTitles.removeAt(position)
-        Toast.makeText(this@RecyclerViewActivity, "Position is$position", Toast.LENGTH_LONG)
-          .show()
-        listDataManager.add(listTitles)
-        adapter.notifyDataSetChanged()
-      }
-    }
     binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
@@ -71,7 +57,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         adapter.filter.filter(newText)
         return false
       }
-
     })
 
     supportFragmentManager.setFragmentResultListener(

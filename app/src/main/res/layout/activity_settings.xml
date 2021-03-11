@@ -8,14 +8,6 @@
     android:orientation="vertical"
     tools:context=".Settings">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="40dp"
-        android:src="@drawable/left_arrow"
-        android:layout_height="40dp">
-
-    </ImageView>
-
     <CheckBox
         android:id="@+id/show_completed_elements"
         android:orderInCategory="100"
@@ -27,16 +19,6 @@
         android:padding="8dp"
         android:layout_width="match_parent"/>
 
-    <CheckBox
-            android:id="@+id/show_all"
-            android:orderInCategory="100"
-            android:padding="8dp"
-            android:text="Show all"
-            android:textSize="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:showAsAction="never" />
     <TextView
         android:layout_marginTop="16dp"
         android:paddingTop="8dp"

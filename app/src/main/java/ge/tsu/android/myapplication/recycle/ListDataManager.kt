@@ -5,13 +5,13 @@ import android.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class ListDataManager(private val context: Context) {
+class ListDataManager<T>(private val sharedPreferencesKey: String, private val context: Context) {
 
   val gson = Gson()
 
-  fun add(list: List<RecycleViewItem>) {
+  fun add(list: T) {
     val sharedPreferences = getDefaultSharedPreferences(context).edit()
-    sharedPreferences.putString(ExtraKeys.SHARED_PREFERENCES_KEY, gson.toJson(list))
+    sharedPreferences.putString(sharedPreferencesKey, gson.toJson(list))
     sharedPreferences.apply()
   }
 
@@ -19,7 +19,7 @@ class ListDataManager(private val context: Context) {
     val sharedPreferences = getDefaultSharedPreferences(context)
 
     val data = sharedPreferences.getString(ExtraKeys.SHARED_PREFERENCES_KEY, "")
-    val type = object : TypeToken<ArrayList<RecycleViewItem>>() {}.getType()
+    val type = object : TypeToken<T>() {}.getType()
     return gson.fromJson(data, type)
   }
 }
