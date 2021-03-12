@@ -1,10 +1,10 @@
 package ge.tsu.android.myapplication.recycle
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.ArrayMap
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Switch
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.add
@@ -19,33 +19,27 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   private lateinit var binding: ActivityRecyclerviewBinding
   private lateinit var adapter: ListSelectionRecyclerViewAdapter
-  companion object{
+
+  companion object {
     var showChecked: Boolean = false
   }
-  
+
   val listDataManager: ListDataManager = ListDataManager(this)
 
-  private lateinit var onclickInterface: onClickInterface
   private var listTitles = ArrayList<RecycleViewItem>()
+  private lateinit var settingList: ArrayMap<String, Boolean>
+
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-//    supportActionBar?.hide()
 
-    onclickInterface = object : onClickInterface {
-      override fun onClick(position: Int) {
-        listTitles.removeAt(position)
-        Toast.makeText(this@RecyclerViewActivity, "Position is$position", Toast.LENGTH_LONG)
-          .show()
-        listDataManager.add(listTitles)
-        adapter.notifyDataSetChanged()
-      }
-    }
+
     binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     listTitles = listDataManager.readList() ?: ArrayList()
-//    adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
+    settingList = listDataManager.readSettings() ?: ArrayMap()
+
     adapter = ListSelectionRecyclerViewAdapter(listTitles)
 
     binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
@@ -99,9 +93,42 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         binding.fab.isClickable = false
       }
     }
-//        binding.fragmentContainerView.findViewById<TextView>(R.id.itemString).setOnClickListener{
-//            removeOnContextAvailableListener {  }
-//        }
+
+  }
+
+  override fun onResume() {
+    super.onResume()
+    var listTitlesChecked = ArrayList<RecycleViewItem>()
+    settingList?.let {
+      if (it.getValue("showCompleted")) {
+
+        for (item in listTitles) {
+          if (item.isChecked) {
+            listTitlesChecked.add(item)
+          }
+        }
+
+        showChecked = !showChecked
+      } else {
+        listTitlesChecked = listTitles
+      }
+      if (it.getValue("shrtByTitle")) {
+        var sortedList = listTitlesChecked.sortedWith(compareBy({
+          it.itemText
+        }))
+        adapter = ListSelectionRecyclerViewAdapter(sortedList.toMutableList())
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      } else {
+        var sortedList = listTitlesChecked.sortedWith(compareBy({
+          it.date
+        }))
+        adapter = ListSelectionRecyclerViewAdapter(sortedList.toMutableList())
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
+      }
+    }
+
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -111,45 +138,11 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-    when(item.itemId){
-      R.id.show_checked -> {
-        var listTitlesChecked = ArrayList<RecycleViewItem>()
-
-        for (item in listTitles) {
-          if (item.isChecked) {
-            listTitlesChecked.add(item)
-          }
-        }
-        adapter = ListSelectionRecyclerViewAdapter(listTitlesChecked)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-
-        showChecked = !showChecked
-      }
-      R.id.show_all -> {
-        adapter = ListSelectionRecyclerViewAdapter(listTitles)
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-        showChecked = !showChecked
-      }
-      R.id.sort_name -> {
-        var sortedByNameList = listTitles.sortedWith(compareBy({
-          it.itemText
-        }))
-
-        adapter = ListSelectionRecyclerViewAdapter(sortedByNameList.toMutableList())
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-      }
-      R.id.sort_date -> {
-        var sortedByDate = listTitles.sortedWith(compareBy({
-          it.date
-        }))
-        adapter = ListSelectionRecyclerViewAdapter(sortedByDate.reversed().toMutableList())
-        binding.listsRecyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
-      }
+    if (item.itemId == R.id.settings) {
+      val settingsIntent = Intent(this, Settings::class.java)
+      startActivity(settingsIntent)
     }
+
     return super.onOptionsItemSelected(item)
   }
 }

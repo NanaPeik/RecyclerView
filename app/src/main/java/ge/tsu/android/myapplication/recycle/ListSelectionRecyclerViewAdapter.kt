@@ -12,15 +12,10 @@ import ge.tsu.android.myapplication.R
 import java.util.*
 import kotlin.collections.ArrayList
 
-interface onClickInterface {
-  fun onClick(position: Int)
-}
 
 class ListSelectionRecyclerViewAdapter(
   private var listTitles: MutableList<RecycleViewItem>
-// , private var onclickInterface: onClickInterface
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>(), Filterable {
-//  var onClickInterface: onClickInterface
 var filteredList : MutableList<RecycleViewItem>
 
   init {
@@ -50,11 +45,7 @@ var filteredList : MutableList<RecycleViewItem>
         notifyItemRemoved(position)
       }
     }
-//    holder.listTitle.setText(listTitles.get(position))
 
-//    holder.listTitle.setOnClickListener {
-//      onClickInterface.onClick(position)
-//    }
   }
 
   class ListSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

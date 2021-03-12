@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="16dp"
+	android:orientation="vertical"
+	tools:context=".recycle.Settings">
+	
+	
+	<CheckBox
+		android:id="@+id/show_completed_elements"
+		android:orderInCategory="100"
+		app:showAsAction="never"
+		android:layout_marginTop="128dp"
+		android:textSize="24dp"
+		android:layout_height="wrap_content"
+		android:text="Show completed elements"
+		android:padding="8dp"
+		android:layout_width="match_parent" />
+	
+	<TextView
+		android:layout_marginTop="16dp"
+		android:paddingTop="8dp"
+		android:layout_width="match_parent"
+		android:textSize="20dp"
+		android:layout_height="wrap_content"
+		android:text="Sort By:" />
+	
+	<RadioGroup
+		android:layout_width="match_parent"
+		android:padding="8dp"
+		android:layout_marginTop="8dp"
+		android:layout_height="wrap_content">
+		
+		<RadioButton
+			android:id="@+id/sort_by_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="title"
+			android:paddingLeft="16dp"
+			android:textSize="24dp"
+			android:checked="true" />
+		
+		<RadioButton
+			android:id="@+id/sort_by_date"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="date"
+			android:paddingLeft="16dp"
+			android:textSize="24dp" />
+	
+	</RadioGroup>
+</LinearLayout>
