@@ -11,6 +11,7 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.R
+import ge.tsu.android.myapplication.Settings
 import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,9 +31,11 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   private lateinit var settingList: ArrayMap<String, Boolean>
 
 
+  lateinit var list : ArrayList<String>
+
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
 
     binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
     setContentView(binding.root)
@@ -142,6 +145,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
       val settingsIntent = Intent(this, Settings::class.java)
       startActivity(settingsIntent)
     }
+
 
     return super.onOptionsItemSelected(item)
   }
