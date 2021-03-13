@@ -7,9 +7,9 @@
 	android:layout_height="match_parent"
 	android:padding="16dp"
 	android:orientation="vertical"
-	tools:context=".recycle.Settings">
-	
-	
+	tools:context=".Settings">
+
+
 	<CheckBox
 		android:id="@+id/show_completed_elements"
 		android:orderInCategory="100"

@@ -1,5 +1,8 @@
 package ge.tsu.android.myapplication.recycle
 
+import ListDataManager
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.ArrayMap
@@ -31,9 +34,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   private lateinit var settingList: ArrayMap<String, Boolean>
 
 
-  lateinit var list : ArrayList<String>
-
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -41,7 +41,13 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     setContentView(binding.root)
 
     listTitles = listDataManager.readList() ?: ArrayList()
-    settingList = listDataManager.readSettings() ?: ArrayMap()
+    if (listDataManager.readSettings() ?: ArrayMap() != null) {
+      settingList = listDataManager.readSettings() ?: ArrayMap()
+    } else {
+      settingList["showCompleted"] = false
+      settingList["shrtByTitle"] = false
+      settingList["shrtByDate"] = false
+    }
 
     adapter = ListSelectionRecyclerViewAdapter(listTitles)
 
@@ -49,17 +55,17 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     binding.listsRecyclerview.adapter = adapter
 
 
-    binding.itemSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-      override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-      }
-
-      override fun onQueryTextChange(newText: String?): Boolean {
-        adapter.filter.filter(newText)
-        return false
-      }
-
-    })
+//    binding.itemSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//      override fun onQueryTextSubmit(query: String?): Boolean {
+//        return false
+//      }
+//
+//      override fun onQueryTextChange(newText: String?): Boolean {
+//        adapter.filter.filter(newText)
+//        return false
+//      }
+//
+//    })
 
     supportFragmentManager.setFragmentResultListener(
       ExtraKeys.FRAGMENT_REQUEST_KEY,
@@ -102,8 +108,8 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   override fun onResume() {
     super.onResume()
     var listTitlesChecked = ArrayList<RecycleViewItem>()
-    settingList?.let {
-      if (it.getValue("showCompleted")) {
+    if (settingList.size != 0) {
+      if (settingList.getValue("showCompleted")) {
 
         for (item in listTitles) {
           if (item.isChecked) {
@@ -115,7 +121,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
       } else {
         listTitlesChecked = listTitles
       }
-      if (it.getValue("shrtByTitle")) {
+      if (settingList.getValue("shrtByTitle")) {
         var sortedList = listTitlesChecked.sortedWith(compareBy({
           it.itemText
         }))
@@ -135,10 +141,36 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
+    val inflater = menuInflater
+    inflater.inflate(R.menu.main, menu)
+    val searchMenuItem = menu.findItem(R.id.item_search)
+    searchMenuItem.actionView?.let {
+      var searchView = searchMenuItem.actionView as SearchView
+
+      val searchManager = getSystemService(Context.SEARCH_SERVICE)
+              as SearchManager
+
+      searchView.setSearchableInfo(
+        searchManager.getSearchableInfo(componentName)
+      )
+      searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+          return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+          adapter.filter.filter(newText)
+          return false
+        }
+
+      })
+    }
     return true
   }
 
+  //  override fun onSearchRequested(): Boolean {
+//    return super.onSearchRequested()
+//  }
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
     if (item.itemId == R.id.settings) {
