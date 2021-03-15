@@ -1,6 +1,5 @@
 package ge.tsu.android.myapplication.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import ge.tsu.android.myapplication.Activity.RecyclerViewActivity
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.data.RecycleViewItem
-import ge.tsu.android.myapplication.storage.ListDataManager
 import java.util.*
 import kotlin.collections.ArrayList
 
+interface onClickInterface {
+    fun setClick(position: Int, res: Boolean)
+}
+
 class ListSelectionRecyclerViewAdapter(
-    private var listTitles: MutableList<RecycleViewItem>
+    private var listTitles: MutableList<RecycleViewItem>,
+    private var onclickInterface: onClickInterface
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>(), Filterable {
     var filteredList: MutableList<RecycleViewItem>
 
+    var onClickInterface: onClickInterface
+
     init {
         this.filteredList = listTitles
+        this.onClickInterface = onclickInterface
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListSelectionViewHolder {
@@ -29,28 +35,22 @@ class ListSelectionRecyclerViewAdapter(
         return ListSelectionViewHolder(view)
     }
 
-    override fun getItemCount() = listTitles.size
+    override fun getItemCount() = filteredList.size
 
-    lateinit var context: Context
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        context = recyclerView.context
-
-    }
-    val listDataManager = ListDataManager(context)
 
     override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
-        holder.listPosition.text = filteredList.get(position).itemNumber.toString()
+
+        holder.listPosition.text = filteredList[position].itemNumber.toString()
         holder.listTitle.text = filteredList[position].itemText
         holder.listCheck.isChecked = filteredList[position].isChecked
-        holder.listItemDetiles.text = filteredList.get(position).detiles
+        holder.listItemDetiles.text = filteredList[position].detiles
 
 
-        holder.listCheck.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+        holder.listCheck.setOnCheckedChangeListener { _: CompoundButton, b: Boolean ->
             holder.listCheck.isChecked = b
-            listTitles.get(position).isChecked=b
-            listDataManager.add(listTitles)
-            if (!RecyclerViewActivity.showChecked && !b) {
+//            listTitles.get(position).isChecked = b
+            onClickInterface.setClick(position, b)
+            if (RecyclerViewActivity.showChecked && !b) {
                 filteredList.removeAt(position)
                 notifyItemRemoved(position)
             }
