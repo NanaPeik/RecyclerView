@@ -7,13 +7,13 @@ import androidx.preference.PreferenceManager
 class SettingsDataManager(private val context: Context) {
     fun addSettings(key: String, isChecked: Boolean) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).edit()
-        sharedPreferences.putString(key, isChecked.toString())
+        sharedPreferences.putBoolean(key, isChecked)
         sharedPreferences.apply()
     }
 
     fun readSettingsData(key: String): Boolean {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val data = sharedPreferences.getString(key, "")
-        return data.toBoolean()
+        val data = sharedPreferences.getBoolean(key, false)
+        return data
     }
 }
