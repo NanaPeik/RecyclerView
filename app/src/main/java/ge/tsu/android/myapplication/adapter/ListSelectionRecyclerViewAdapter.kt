@@ -1,12 +1,9 @@
-package ge.tsu.android.myapplication.recycle
+package ge.tsu.android.myapplication.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import ge.tsu.android.myapplication.Activity.RecyclerViewActivity
 import ge.tsu.android.myapplication.R
@@ -15,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ListSelectionRecyclerViewAdapter(
-  private var listTitles: MutableList<RecycleViewItem>
+    private var listTitles: MutableList<RecycleViewItem>
 ) : RecyclerView.Adapter<ListSelectionRecyclerViewAdapter.ListSelectionViewHolder>(), Filterable {
     var filteredList: MutableList<RecycleViewItem>
 
@@ -39,11 +36,12 @@ class ListSelectionRecyclerViewAdapter(
         holder.listCheck.isChecked = filteredList.get(position).isChecked
         holder.listItemDetiles.text = filteredList.get(position).detiles
 
-        holder.listCheck.setOnClickListener {
-            filteredList.get(position).isChecked = !filteredList.get(position).isChecked
+        holder.listCheck.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
             if (RecyclerViewActivity.showChecked && !filteredList[position].isChecked) {
                 filteredList.removeAt(position)
                 notifyItemRemoved(position)
+                RecyclerViewActivity.showChecked = !RecyclerViewActivity.showChecked
+
             }
         }
 

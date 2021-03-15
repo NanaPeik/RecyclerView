@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.Activity.SettingsActivity.Companion.SHOW_COMPLETED_ELEMENTS
 import ge.tsu.android.myapplication.Activity.SettingsActivity.Companion.SORT_BY_TITLE
 import ge.tsu.android.myapplication.R
+import ge.tsu.android.myapplication.adapter.ListSelectionRecyclerViewAdapter
 import ge.tsu.android.myapplication.data.RecycleViewItem
 import ge.tsu.android.myapplication.databinding.ActivityRecyclerviewBinding
 import ge.tsu.android.myapplication.fragments.TextFragment
 import ge.tsu.android.myapplication.keys.ExtraKeys
-import ge.tsu.android.myapplication.recycle.ListSelectionRecyclerViewAdapter
 import ge.tsu.android.myapplication.storage.ListDataManager
 import ge.tsu.android.myapplication.storage.SettingsDataManager
 import java.util.*
@@ -90,14 +90,13 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         }
     }
 
-
     override fun onResume() {
 
-        getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(
-            { sharedPreferences, key ->
+        getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == ExtraKeys.SHARED_PREFERENCES_KEY) {
 
             }
-        )
+        }
         super.onResume()
         var listTitlesChecked = ArrayList<RecycleViewItem>()
         if (settingsDataManager.readSettingsData(SHOW_COMPLETED_ELEMENTS)) {
@@ -111,6 +110,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             showChecked = !showChecked
         } else {
             listTitlesChecked = listTitles
+
         }
         if (settingsDataManager.readSettingsData(SORT_BY_TITLE)) {
             var sortedList = listTitlesChecked.sortedWith(compareBy({
