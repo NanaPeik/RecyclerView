@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.LinearLayoutManager
 import ge.tsu.android.myapplication.Activity.SettingsActivity.Companion.SHOW_COMPLETED_ELEMENTS
 import ge.tsu.android.myapplication.Activity.SettingsActivity.Companion.SORT_BY_TITLE
@@ -91,43 +90,27 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     }
 
     override fun onResume() {
-
-        getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-            if (key == ExtraKeys.SHARED_PREFERENCES_KEY) {
-
-            }
-        }
         super.onResume()
-        var listTitlesChecked = ArrayList<RecycleViewItem>()
-        if (settingsDataManager.readSettingsData(SHOW_COMPLETED_ELEMENTS)) {
+        showChecked = settingsDataManager.readSettingsData(SHOW_COMPLETED_ELEMENTS)
+        val sortByTitle = settingsDataManager.readSettingsData(SORT_BY_TITLE)
 
-            for (item in listTitles) {
-                if (item.isChecked) {
-                    listTitlesChecked.add(item)
-                }
+        val list = listTitles.filter {
+            if (showChecked) {
+                true
+            } else {
+                !it.isChecked
             }
-
-            showChecked = !showChecked
-        } else {
-            listTitlesChecked = listTitles
-
-        }
-        if (settingsDataManager.readSettingsData(SORT_BY_TITLE)) {
-            var sortedList = listTitlesChecked.sortedWith(compareBy({
+        }.sortedWith(compareBy {
+            if (sortByTitle) {
                 it.itemText
-            }))
-            adapter = ListSelectionRecyclerViewAdapter(sortedList.toMutableList())
-            binding.listsRecyclerview.adapter = adapter
-            adapter.notifyDataSetChanged()
-        } else {
-            var sortedList = listTitlesChecked.sortedWith(compareBy({
+            } else {
                 it.date
-            }))
-            adapter = ListSelectionRecyclerViewAdapter(sortedList.toMutableList())
-            binding.listsRecyclerview.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
+            }
+        })
 
+        adapter = ListSelectionRecyclerViewAdapter(list.toMutableList())
+        binding.listsRecyclerview.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

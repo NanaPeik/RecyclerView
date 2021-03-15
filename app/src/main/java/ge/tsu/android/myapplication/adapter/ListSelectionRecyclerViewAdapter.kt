@@ -29,22 +29,17 @@ class ListSelectionRecyclerViewAdapter(
     override fun getItemCount() = filteredList.size
 
     override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
-//    holder.listPosition.text = (position + 1).toString()
-
         holder.listPosition.text = filteredList.get(position).itemNumber.toString()
         holder.listTitle.text = filteredList[position].itemText
         holder.listCheck.isChecked = filteredList.get(position).isChecked
         holder.listItemDetiles.text = filteredList.get(position).detiles
 
         holder.listCheck.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
-            if (RecyclerViewActivity.showChecked && !filteredList[position].isChecked) {
+            if (!RecyclerViewActivity.showChecked && b) {
                 filteredList.removeAt(position)
                 notifyItemRemoved(position)
-                RecyclerViewActivity.showChecked = !RecyclerViewActivity.showChecked
-
             }
         }
-
     }
 
     class ListSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
