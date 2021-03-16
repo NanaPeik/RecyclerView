@@ -40,7 +40,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     private var listTitles = ArrayList<RecycleViewItem>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -82,7 +81,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                     listTitles.add(rvi)
                 }
 
-                binding.fab.isClickable = true
 
                 listDataManager.add(listTitles)
                 onResume()
@@ -96,7 +94,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 addToBackStack(null)
                 add<TextFragment>(R.id.fragment_container_view)
 
-                binding.fab.isClickable = false
             }
         }
     }
@@ -151,16 +148,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         }
         return true
     }
-
-//    override fun onBackPressed() {
-//
-//        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
-//        if (fragment != null) {
-//            supportFragmentManager.beginTransaction().remove(fragment).commit()
-//        }
-//        binding.fab.isClickable = true
-//
-//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
