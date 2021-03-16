@@ -22,9 +22,4 @@ class ListDataManager(private val context: Context) {
         val type = object : TypeToken<ArrayList<RecycleViewItem>>() {}.getType()
         return gson.fromJson(data, type)
     }
-    fun cleraStorage(){
-        val sharedPreferences = getDefaultSharedPreferences(context).edit()
-        sharedPreferences.clear()
-        sharedPreferences.apply()
-    }
 }

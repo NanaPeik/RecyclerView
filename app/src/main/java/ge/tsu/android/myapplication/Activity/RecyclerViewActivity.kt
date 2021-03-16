@@ -150,7 +150,18 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         return true
     }
 
+    override fun navigateUpTo(upIntent: Intent?): Boolean {
+        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+        binding.fab.isClickable = true
+
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
 
         if (item.itemId == R.id.settings) {
             val settingsIntent = Intent(this, SettingsActivity::class.java)

@@ -17,7 +17,8 @@
                 android:value=".Activity.RecyclerViewActivity" />
         </activity>
 
-        <activity android:name=".Activity.RecyclerViewActivity">
+        <activity android:name=".Activity.RecyclerViewActivity"
+            android:parentActivityName=".Activity.RecyclerViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
@@ -27,6 +28,10 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.RecyclerViewActivity" />
+
         </activity>
 	</application>
 

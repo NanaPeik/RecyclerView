@@ -38,5 +38,7 @@ class TextFragment : Fragment() {
                 remove(this@TextFragment)
             }
         }
+
+        requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
