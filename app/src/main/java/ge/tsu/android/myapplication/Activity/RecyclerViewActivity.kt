@@ -3,6 +3,7 @@ package ge.tsu.android.myapplication.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -59,7 +60,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = adapter
-
+        val intent = Intent()
 
         supportFragmentManager.setFragmentResultListener(
             ExtraKeys.FRAGMENT_REQUEST_KEY,
@@ -92,6 +93,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         binding.fab.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
+                addToBackStack(null)
                 add<TextFragment>(R.id.fragment_container_view)
 
                 binding.fab.isClickable = false
@@ -150,15 +152,15 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         return true
     }
 
-    override fun onBackPressed() {
-
-        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
-        }
-        binding.fab.isClickable = true
-
-    }
+//    override fun onBackPressed() {
+//
+//        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
+//        if (fragment != null) {
+//            supportFragmentManager.beginTransaction().remove(fragment).commit()
+//        }
+//        binding.fab.isClickable = true
+//
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
