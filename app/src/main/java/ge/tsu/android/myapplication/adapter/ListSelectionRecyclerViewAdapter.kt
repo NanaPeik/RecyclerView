@@ -37,7 +37,6 @@ class ListSelectionRecyclerViewAdapter(
 
     override fun getItemCount() = filteredList.size
 
-
     override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
 
         holder.listPosition.text = filteredList[position].itemNumber.toString()
@@ -56,9 +55,7 @@ class ListSelectionRecyclerViewAdapter(
             }
 
         }
-
     }
-
 
     class ListSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val listPosition = itemView.findViewById(R.id.itemNumber) as TextView

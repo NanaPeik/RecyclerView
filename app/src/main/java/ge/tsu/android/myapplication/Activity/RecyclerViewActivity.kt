@@ -107,11 +107,9 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
         val list = listTitles.filter {
             if (showChecked) {
-//                true
-                it.isChecked
-            } else {
                 true
-//                !it.isChecked
+            } else {
+                !it.isChecked
             }
         }.sortedWith(compareBy {
             if (sortByTitle) {
@@ -148,7 +146,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                     adapter.filter.filter(newText)
                     return false
                 }
-
             })
         }
         return true
