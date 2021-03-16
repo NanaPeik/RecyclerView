@@ -12,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 interface onClickInterface {
-    fun setClick(position: Int, res: Boolean)
+    fun onClick(position: Int, res: Boolean)
 }
 
 class ListSelectionRecyclerViewAdapter(
@@ -47,11 +47,10 @@ class ListSelectionRecyclerViewAdapter(
 
         holder.listCheck.setOnCheckedChangeListener { _: CompoundButton, b: Boolean ->
             holder.listCheck.isChecked = b
-//            listTitles.get(position).isChecked = b
-            onClickInterface.setClick(position, b)
-            if (RecyclerViewActivity.showChecked && !b) {
+            onClickInterface.onClick(filteredList[position].itemNumber, b)
+            if (!RecyclerViewActivity.showChecked && b) {
                 filteredList.removeAt(position)
-                notifyItemRemoved(position)
+                notifyDataSetChanged()
             }
 
         }

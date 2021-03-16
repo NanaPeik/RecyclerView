@@ -49,10 +49,9 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         listTitles = listDataManager.readList() ?: ArrayList()
 
         onclickInterface = object : onClickInterface {
-            override fun setClick(position: Int, res: Boolean) {
-                listTitles[position].isChecked = res
+            override fun onClick(position: Int, res: Boolean) {
+                listTitles[position - 1].isChecked = res
                 listDataManager.add(listTitles)
-//                adapter.notifyDataSetChanged()
             }
         }
 
