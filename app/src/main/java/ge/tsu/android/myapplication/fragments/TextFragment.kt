@@ -30,7 +30,9 @@ class TextFragment : Fragment() {
             activity?.let {
                 val intent = Intent(it, RecyclerViewActivity::class.java)
                 it.startActivity(intent)
+                requireActivity().onBackPressed()
             }
+
         }
         return binding.root
     }
@@ -48,6 +50,7 @@ class TextFragment : Fragment() {
                     isEnabled = false
                     requireActivity().onBackPressed()
                 }
+
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(

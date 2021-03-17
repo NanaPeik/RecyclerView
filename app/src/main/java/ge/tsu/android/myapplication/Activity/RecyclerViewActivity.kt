@@ -3,11 +3,12 @@ package ge.tsu.android.myapplication.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import ge.tsu.android.myapplication.storage.ListDataManager
 import ge.tsu.android.myapplication.storage.SettingsDataManager
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
@@ -65,6 +67,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             ExtraKeys.FRAGMENT_REQUEST_KEY,
             this
         ) { _, bundle ->
+
             val title = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
             val detiles = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA_DETILES)
             title?.let {
@@ -86,7 +89,10 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 onResume()
                 adapter.notifyItemInserted(listTitles.size)
             }
+//            finishAndRemoveTask()
+
         }
+
 
         binding.fab.setOnClickListener {
             supportFragmentManager.commit {
@@ -95,6 +101,16 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 add<TextFragment>(R.id.fragment_container_view)
 
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        val fm: FragmentManager = supportFragmentManager
+
+        if (fm.backStackEntryCount > 1) {
+            fm.popBackStack()
+        } else {
+            finish()
         }
     }
 
@@ -150,7 +166,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
 
         if (item.itemId == R.id.settings) {
             val settingsIntent = Intent(this, SettingsActivity::class.java)
