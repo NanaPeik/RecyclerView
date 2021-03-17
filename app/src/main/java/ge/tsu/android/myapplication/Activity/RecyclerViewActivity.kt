@@ -7,8 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -101,16 +99,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 add<TextFragment>(R.id.fragment_container_view)
 
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        val fm: FragmentManager = supportFragmentManager
-
-        if (fm.backStackEntryCount > 1) {
-            fm.popBackStack()
-        } else {
-            finish()
         }
     }
 
