@@ -9,4 +9,6 @@
     <string name="create_list">Create</string>
     <string name="search">Search</string>
     <string name="detele_item">delete</string>
+    <string name="edit_item">edit</string>
+    <string name="edit_button">Edit</string>
 </resources>

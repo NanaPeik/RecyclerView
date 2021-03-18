@@ -3,8 +3,13 @@ package ge.tsu.android.myapplication.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ge.tsu.android.myapplication.data.RecycleViewItem
 import ge.tsu.android.myapplication.databinding.ActivityDetailsBinding
 import ge.tsu.android.myapplication.keys.ExtraKeys
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsBinding
@@ -15,11 +20,11 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var intent = intent
+        val intent = intent
 
         binding.numeber.text = intent.getIntExtra(ExtraKeys.INTENT_ITEM_NUMBER, 0).toString()
         binding.title.text = intent.getStringExtra(ExtraKeys.INTENT_ITEM_TITLE)
-        binding.details.text = intent.getStringExtra(ExtraKeys.INTENT_ITEM_DETILES)
+        binding.details.text = intent.getStringExtra(ExtraKeys.INTENT_ITEM_DETAILS)
         binding.inputDate.text = intent.getStringExtra(ExtraKeys.INTENT_ITEM_DATE)
         if (intent.getBooleanExtra(
                 ExtraKeys.INTENT_ITEM_CHECKED,
@@ -30,9 +35,21 @@ class DetailsActivity : AppCompatActivity() {
 
 
         binding.deleteItem.setOnClickListener {
-            var intent = Intent(this@DetailsActivity, RecyclerViewActivity::class.java)
+            val intent = Intent(this@DetailsActivity, RecyclerViewActivity::class.java)
             intent.putExtra(ExtraKeys.INTENT_DELETE_ITEM, binding.numeber.text)
             startActivity(intent)
+        }
+
+        binding.editItem.setOnClickListener {
+            val intentEdit = Intent(this@DetailsActivity, EditActivity::class.java)
+
+            intentEdit.putExtra(ExtraKeys.INTENT_ITEM_NUMBER, binding.numeber.text)
+            intentEdit.putExtra(ExtraKeys.INTENT_ITEM_TITLE, binding.title.text)
+            intentEdit.putExtra(ExtraKeys.INTENT_ITEM_DETAILS, binding.details.text)
+            intentEdit.putExtra(ExtraKeys.INTENT_ITEM_CHECKED,binding.isChecked.text)
+            intentEdit.putExtra(ExtraKeys.INTENT_ITEM_DATE,binding.inputDate.text)
+            startActivity(intentEdit)
+
         }
     }
 }

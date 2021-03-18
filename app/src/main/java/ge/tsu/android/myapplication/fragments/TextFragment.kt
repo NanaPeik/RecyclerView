@@ -50,7 +50,7 @@ class TextFragment : Fragment() {
                 ExtraKeys.FRAGMENT_REQUEST_KEY,
                 bundleOf(
                     ExtraKeys.FRAGMENT_RESULT_EXTRA to binding.editText.text.toString(),
-                    ExtraKeys.FRAGMENT_RESULT_EXTRA_DETILES to binding.detiles.text.toString()
+                    ExtraKeys.FRAGMENT_RESULT_EXTRA_DETAILS to binding.detiles.text.toString()
                 )
             )
             parentFragmentManager.commit {

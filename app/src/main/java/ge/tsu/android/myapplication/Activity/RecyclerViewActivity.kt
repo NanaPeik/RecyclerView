@@ -21,9 +21,9 @@ import ge.tsu.android.myapplication.fragments.TextFragment
 import ge.tsu.android.myapplication.keys.ExtraKeys
 import ge.tsu.android.myapplication.storage.ListDataManager
 import ge.tsu.android.myapplication.storage.SettingsDataManager
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
@@ -56,10 +56,10 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             }
 
             override fun showDetiles(position: Int) {
-                var intent = Intent(this@RecyclerViewActivity, DetailsActivity::class.java)
+                val intent = Intent(this@RecyclerViewActivity, DetailsActivity::class.java)
                 intent.putExtra(ExtraKeys.INTENT_ITEM_NUMBER, listTitles[position].itemNumber)
                 intent.putExtra(ExtraKeys.INTENT_ITEM_TITLE, listTitles[position].itemText)
-                intent.putExtra(ExtraKeys.INTENT_ITEM_DETILES, listTitles[position].details)
+                intent.putExtra(ExtraKeys.INTENT_ITEM_DETAILS, listTitles[position].details)
                 intent.putExtra(ExtraKeys.INTENT_ITEM_DATE, listTitles[position].date.toString())
                 intent.putExtra(ExtraKeys.INTENT_ITEM_CHECKED, listTitles[position].isChecked)
                 startActivity(intent)
@@ -79,12 +79,12 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         ) { _, bundle ->
 
             val title = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
-            val detiles = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA_DETILES)
+            val detiles = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA_DETAILS)
             title?.let {
 
-                var itemTitle = it
+                val itemTitle = it
                 detiles?.let {
-                    var rvi = RecycleViewItem(
+                    val rvi = RecycleViewItem(
                         listTitles.size + 1,
                         itemTitle,
                         false,
@@ -112,10 +112,10 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         }
 
         //delete RecycleView form detailes activity
-        var intentDelete = intent
+        val intentDelete = intent
 
         intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.let {
-            var index = intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.toInt()
+            val index = intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.toInt()
             var deleteIndex = 0
             for (item in listTitles) {
                 if (item.itemNumber == index) {
@@ -127,6 +127,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             listDataManager.add(listTitles)
             adapter.notifyDataSetChanged()
         }
+
     }
 
     override fun onResume() {
@@ -159,7 +160,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         inflater.inflate(R.menu.main, menu)
         val searchMenuItem = menu.findItem(R.id.item_search)
         searchMenuItem.actionView?.let {
-            var searchView = searchMenuItem.actionView as SearchView
+            val searchView = searchMenuItem.actionView as SearchView
 
             val searchManager = getSystemService(SEARCH_SERVICE)
                     as SearchManager
