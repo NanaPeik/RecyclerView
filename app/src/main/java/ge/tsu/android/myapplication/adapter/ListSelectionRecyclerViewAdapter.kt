@@ -1,10 +1,12 @@
 package ge.tsu.android.myapplication.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import ge.tsu.android.myapplication.Activity.DetilesActivity
 import ge.tsu.android.myapplication.Activity.RecyclerViewActivity
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.data.RecycleViewItem
@@ -13,6 +15,7 @@ import kotlin.collections.ArrayList
 
 interface onClickInterface {
     fun onClick(position: Int, res: Boolean)
+    fun showDetiles(position: Int)
 }
 
 class ListSelectionRecyclerViewAdapter(
@@ -52,6 +55,10 @@ class ListSelectionRecyclerViewAdapter(
                 filteredList.removeAt(position)
                 notifyDataSetChanged()
             }
+
+        }
+        holder.listTitle.setOnClickListener {
+            onClickInterface.showDetiles(position)
 
         }
     }

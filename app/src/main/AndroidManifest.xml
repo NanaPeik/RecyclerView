@@ -17,6 +17,12 @@
                 android:value=".Activity.RecyclerViewActivity" />
         </activity>
 
+        <activity android:name=".Activity.DetilesActivity"
+            android:parentActivityName=".Activity.RecyclerViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.RecyclerViewActivity" />
+        </activity>
         <activity android:name=".Activity.RecyclerViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

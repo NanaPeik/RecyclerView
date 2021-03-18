@@ -3,6 +3,7 @@ package ge.tsu.android.myapplication.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +54,16 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 listTitles[position - 1].isChecked = res
                 listDataManager.add(listTitles)
             }
+
+            override fun showDetiles(position: Int) {
+                var intent=Intent(this@RecyclerViewActivity,DetilesActivity::class.java)
+                intent.putExtra("number",listTitles[position].itemNumber)
+                intent.putExtra("title",listTitles[position].itemText)
+                intent.putExtra("detiles",listTitles[position].detiles)
+                intent.putExtra("date",listTitles[position].date.toString())
+                intent.putExtra("checked",listTitles[position].isChecked)
+                startActivity(intent)
+            }
         }
 
         adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
@@ -87,8 +98,6 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 onResume()
                 adapter.notifyItemInserted(listTitles.size)
             }
-//            finishAndRemoveTask()
-
         }
 
 
