@@ -3,7 +3,6 @@ package ge.tsu.android.myapplication.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -30,10 +29,11 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
     private lateinit var binding: ActivityRecyclerviewBinding
     private lateinit var adapter: ListSelectionRecyclerViewAdapter
-    private lateinit var onclickInterface: onClickInterface
+
 
     companion object {
-        var showChecked: Boolean = false
+        var showChecked = false
+        lateinit var onclickInterface: onClickInterface
     }
 
     val listDataManager: ListDataManager = ListDataManager(this)
@@ -56,21 +56,22 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             }
 
             override fun showDetiles(position: Int) {
-                var intent=Intent(this@RecyclerViewActivity,DetilesActivity::class.java)
-                intent.putExtra("number",listTitles[position].itemNumber)
-                intent.putExtra("title",listTitles[position].itemText)
-                intent.putExtra("detiles",listTitles[position].detiles)
-                intent.putExtra("date",listTitles[position].date.toString())
-                intent.putExtra("checked",listTitles[position].isChecked)
+                var intent = Intent(this@RecyclerViewActivity, DetailsActivity::class.java)
+                intent.putExtra(ExtraKeys.INTENT_ITEM_NUMBER, listTitles[position].itemNumber)
+                intent.putExtra(ExtraKeys.INTENT_ITEM_TITLE, listTitles[position].itemText)
+                intent.putExtra(ExtraKeys.INTENT_ITEM_DETILES, listTitles[position].details)
+                intent.putExtra(ExtraKeys.INTENT_ITEM_DATE, listTitles[position].date.toString())
+                intent.putExtra(ExtraKeys.INTENT_ITEM_CHECKED, listTitles[position].isChecked)
                 startActivity(intent)
             }
+
         }
 
         adapter = ListSelectionRecyclerViewAdapter(listTitles, onclickInterface)
 
         binding.listsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listsRecyclerview.adapter = adapter
-        val intent = Intent()
+
 
         supportFragmentManager.setFragmentResultListener(
             ExtraKeys.FRAGMENT_REQUEST_KEY,
@@ -109,6 +110,23 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
             }
         }
+
+        //delete RecycleView form detailes activity
+        var intentDelete = intent
+
+        intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.let {
+            var index = intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.toInt()
+            var deleteIndex = 0
+            for (item in listTitles) {
+                if (item.itemNumber == index) {
+                    deleteIndex = listTitles.indexOf(item)
+                }
+            }
+            index?.let { listTitles.removeAt(deleteIndex) }
+
+            listDataManager.add(listTitles)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onResume() {
@@ -133,6 +151,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
         adapter = ListSelectionRecyclerViewAdapter(list.toMutableList(), onclickInterface)
         binding.listsRecyclerview.adapter = adapter
         adapter.notifyDataSetChanged()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

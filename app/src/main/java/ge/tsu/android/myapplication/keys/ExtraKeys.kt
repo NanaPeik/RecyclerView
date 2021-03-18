@@ -5,4 +5,10 @@ object ExtraKeys {
     val FRAGMENT_RESULT_EXTRA = "fragment_result_extra"
     val SHARED_PREFERENCES_KEY = "list_items"
     val FRAGMENT_RESULT_EXTRA_DETILES = "fragment_result_extra_detiles"
+    val INTENT_ITEM_NUMBER = "number"
+    val INTENT_ITEM_TITLE = "title"
+    val INTENT_ITEM_DETILES = "detiles"
+    val INTENT_ITEM_DATE = "date"
+    val INTENT_ITEM_CHECKED = "checked"
+    val INTENT_DELETE_ITEM = "delete"
 }

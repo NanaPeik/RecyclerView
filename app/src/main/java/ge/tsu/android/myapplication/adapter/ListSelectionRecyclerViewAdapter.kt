@@ -1,12 +1,10 @@
 package ge.tsu.android.myapplication.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import ge.tsu.android.myapplication.Activity.DetilesActivity
 import ge.tsu.android.myapplication.Activity.RecyclerViewActivity
 import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.data.RecycleViewItem
@@ -45,7 +43,7 @@ class ListSelectionRecyclerViewAdapter(
         holder.listPosition.text = filteredList[position].itemNumber.toString()
         holder.listTitle.text = filteredList[position].itemText
         holder.listCheck.isChecked = filteredList[position].isChecked
-        holder.listItemDetiles.text = filteredList[position].detiles
+        holder.listItemDetiles.text = filteredList[position].details
 
 
         holder.listCheck.setOnCheckedChangeListener { _: CompoundButton, b: Boolean ->
@@ -59,7 +57,6 @@ class ListSelectionRecyclerViewAdapter(
         }
         holder.listTitle.setOnClickListener {
             onClickInterface.showDetiles(position)
-
         }
     }
 

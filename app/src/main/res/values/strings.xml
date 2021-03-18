@@ -8,4 +8,5 @@
     <string name="search_hint">Enter podcast search</string>
     <string name="create_list">Create</string>
     <string name="search">Search</string>
+    <string name="detele_item">delete</string>
 </resources>
