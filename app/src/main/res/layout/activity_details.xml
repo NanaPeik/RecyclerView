@@ -79,7 +79,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:paddingRight="16dp"
-            android:text="@string/detele_item"
+            android:text="@string/delete_item"
             android:textColor="@color/delete"
             android:textSize="20sp" />
     </LinearLayout>

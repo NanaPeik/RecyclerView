@@ -8,7 +8,9 @@
     <string name="search_hint">Enter podcast search</string>
     <string name="create_list">Create</string>
     <string name="search">Search</string>
-    <string name="detele_item">delete</string>
+    <string name="delete_item">delete</string>
     <string name="edit_item">edit</string>
     <string name="edit_button">Edit</string>
+    <string name="completed_item">This item is completed</string>
+    <string name="not_completed_item">This item is not completed</string>
 </resources>

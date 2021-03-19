@@ -3,12 +3,9 @@ package ge.tsu.android.myapplication.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ge.tsu.android.myapplication.data.RecycleViewItem
+import ge.tsu.android.myapplication.R
 import ge.tsu.android.myapplication.databinding.ActivityDetailsBinding
 import ge.tsu.android.myapplication.keys.ExtraKeys
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class DetailsActivity : AppCompatActivity() {
@@ -30,8 +27,8 @@ class DetailsActivity : AppCompatActivity() {
                 ExtraKeys.INTENT_ITEM_CHECKED,
                 false
             )
-        ) binding.isChecked.text = "This item is completed"
-        else binding.isChecked.text = "This item is not completed"
+        ) binding.isChecked.text = resources.getString(R.string.completed_item)
+        else binding.isChecked.text = resources.getString(R.string.not_completed_item)
 
 
         binding.deleteItem.setOnClickListener {

@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 
 interface onClickInterface {
     fun onClick(position: Int, res: Boolean)
-    fun showDetiles(position: Int)
+    fun showDetails(position: Int)
 }
 
 class ListSelectionRecyclerViewAdapter(
@@ -56,7 +56,7 @@ class ListSelectionRecyclerViewAdapter(
 
         }
         holder.listTitle.setOnClickListener {
-            onClickInterface.showDetiles(position)
+            onClickInterface.showDetails(position)
         }
     }
 

@@ -22,6 +22,8 @@ import ge.tsu.android.myapplication.keys.ExtraKeys
 import ge.tsu.android.myapplication.storage.ListDataManager
 import ge.tsu.android.myapplication.storage.SettingsDataManager
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -80,16 +82,21 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
 
             val title = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA)
             val detiles = bundle.getString(ExtraKeys.FRAGMENT_RESULT_EXTRA_DETAILS)
-            title?.let {
+            title?.let { it ->
 
-                val itemTitle = it
-                detiles?.let {
+                val currentDate = LocalDateTime.now().format(
+                    DateTimeFormatter.ofLocalizedDateTime(
+                        FormatStyle.LONG, FormatStyle.SHORT
+                    )
+                )
+                val itemTitle = it.trim()
+                detiles?.let { it ->
                     val rvi = RecycleViewItem(
                         listTitles.size + 1,
                         itemTitle,
                         false,
-                        it,
-                        Date()
+                        it.trim(),
+                        currentDate
                     )
                     listTitles.add(rvi)
                 }
@@ -111,23 +118,49 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
             }
         }
 
-        //delete RecycleView form detailes activity
-        val intentDelete = intent
+        //delete RecycleView form details activity
+        val intent = intent
 
-        intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.let {
-            val index = intentDelete.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.toInt()
+        intent.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.let {
+            val index = intent.getStringExtra(ExtraKeys.INTENT_DELETE_ITEM)?.toInt()
             var deleteIndex = 0
             for (item in listTitles) {
                 if (item.itemNumber == index) {
                     deleteIndex = listTitles.indexOf(item)
                 }
             }
-            index?.let { listTitles.removeAt(deleteIndex) }
+            listTitles.removeAt(deleteIndex)
 
             listDataManager.add(listTitles)
             adapter.notifyDataSetChanged()
         }
 
+        //edit RecycleView form details activity
+        intent.getStringExtra(ExtraKeys.PREVIOUS_NUMBER)?.let {
+            var editObject = RecycleViewItem(
+                intent.getStringExtra(ExtraKeys.PREVIOUS_NUMBER)!!.toInt(),
+                intent.getStringExtra(ExtraKeys.PREVIOUS_TITLE).toString(),
+                intent.getStringExtra(ExtraKeys.PREVIOUS_CHECKED).toBoolean(),
+                intent.getStringExtra(ExtraKeys.PREVIOUS_DETAILS).toString(),
+                intent.getStringExtra(ExtraKeys.PREVIOUS_DATE).toString()
+            )
+            var editIndex = 0
+            for (item in listTitles) {
+                if (item == editObject) {
+                    editIndex = listTitles.indexOf(item)
+                }
+            }
+
+            listTitles[editIndex].itemText =
+                intent.getStringExtra(ExtraKeys.EDITED_TITLE).toString()
+            listTitles[editIndex].details =
+                intent.getStringExtra(ExtraKeys.EDITED_DETAILS).toString()
+            listTitles[editIndex].date = intent.getStringExtra(ExtraKeys.EDITED_DATE).toString()
+
+            listDataManager.add(listTitles)
+
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onResume() {

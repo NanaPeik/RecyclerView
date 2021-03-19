@@ -1,7 +1,6 @@
 package ge.tsu.android.myapplication.storage
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
