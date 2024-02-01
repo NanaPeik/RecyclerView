@@ -57,7 +57,7 @@ class RecyclerViewActivity : AppCompatActivity(R.layout.activity_recyclerview) {
                 listDataManager.add(listTitles)
             }
 
-            override fun showDetiles(position: Int) {
+            override fun showDetails(position: Int) {
                 val intent = Intent(this@RecyclerViewActivity, DetailsActivity::class.java)
                 intent.putExtra(ExtraKeys.INTENT_ITEM_NUMBER, listTitles[position].itemNumber)
                 intent.putExtra(ExtraKeys.INTENT_ITEM_TITLE, listTitles[position].itemText)
